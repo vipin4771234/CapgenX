@@ -5,40 +5,60 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
+import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+  StatusBar,
+  StyleSheet,
+  useColorScheme,
+  View,
+} from 'react-native';
+import { Provider } from 'react-redux';
+import { SafeAreaInsetsContext, SafeAreaProvider } from 'react-native-safe-area-context';
+import store from './src/store';
+import Navigators from './src/navigation/Navigators';
 
-function App() {
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
+
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <SafeAreaInsetsContext.Consumer>
+          {insets => (
+            <View style={{flex: 1, paddingTop: insets?.top}}>
+              <StatusBar barStyle='dark-content' />
+              <Navigators />
+            </View>
+          )}
+        </SafeAreaInsetsContext.Consumer>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+    backgroundColor: 'lightblue',
+    padding: 20
   },
 });
 
