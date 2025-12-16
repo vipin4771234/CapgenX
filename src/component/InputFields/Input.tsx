@@ -23,7 +23,7 @@ const Input = ({
   return (
     <View style={[localStyles.container, containerStyle]}>
       {label && <Text style={localStyles.labelText}>{label}</Text>}
-      <View style={{width: '100%'}}>
+      <View style={[{width: '100%',}]}>
         {placeholder === 'Enter Phone Number' ? (
           <Pressable
             onPress={() => (onEyePress ? onEyePress() : () => {})}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "417300525576",
+    "project_id": "capgenx-f44d0",
+    "storage_bucket": "capgenx-f44d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417300525576:android:f5e6280a5ac62938fd57bd",
+        "android_client_info": {
+          "package_name": "com.capgenx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt2AsawqrYi1fVe56QAeiX6lk2iGXH6lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

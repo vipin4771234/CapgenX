@@ -5,25 +5,26 @@ import {
   ToastAndroid,
   Dimensions,
   StyleSheet,
+  Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StackActions, useNavigation} from '@react-navigation/native';
-import {login} from '../../store/UserSlice';
-import {useDispatch} from 'react-redux';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { login } from '../../store/UserSlice';
+import { useDispatch } from 'react-redux';
 import Input from '../../component/InputFields/Input';
 import CommonButton from '../../component/Buttons/CommonButton';
 // import {loginUser} from '../../api/api';
 import WrapperComponent from '../../WrapperComponent/WrapperComponent';
-import {scale} from '../../utils/mixins';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { scale } from '../../utils/mixins';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // import {PhoneSignIn} from '../../utils/hooks/PhoneAuth';
 
 const LoginScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({phoneError: ''});
+  const [error, setError] = useState({ phoneError: '' });
   const dispatch = useDispatch();
   const screenWidth = Dimensions.get('screen').width;
   const screenHeight = Dimensions.get('screen').height;
@@ -31,7 +32,7 @@ const LoginScreen = () => {
 
   const validate = () => {
     let valid = true;
-    let err = {phoneError: '', passwordError: ''};
+    let err = { phoneError: '', passwordError: '' };
     if (!phone) {
       ToastAndroid.show('Enter correct number', ToastAndroid.LONG);
       // setError({...error,phoneError: 'This Field is required'})
@@ -40,7 +41,7 @@ const LoginScreen = () => {
       ToastAndroid.show('Enter correct number', ToastAndroid.LONG);
       valid = false;
     }
-    setError({phoneError: err.phoneError});
+    setError({ phoneError: err.phoneError });
     return valid;
   };
 
@@ -68,7 +69,7 @@ const LoginScreen = () => {
     }
     setPhone(value);
   };
-console.log("raanarnanr")
+  console.log('raanarnanr');
   return (
     <WrapperComponent>
       <View
@@ -77,46 +78,51 @@ console.log("raanarnanr")
             flex: 1,
             // paddingHorizontal: 20,
             alignItems: 'center',
-            // justifyContent: 'flex-end'
+            justifyContent: 'center',
           },
-        ]}>
-        <Image
-          source={require('../../assets/Cap.png')}
-          // resizeMode='contain'
-          style={{
-            width: screenWidth,
-            height: screenHeight / 2,
-            // borderRadius: 10,
-          }}
-        />
+        ]}
+      >
         <View
           style={{
             flex: 1,
             // paddingHorizontal: 20,
-            alignItems: 'flex-start',
+            alignItems: 'center',
             width: '100%',
             paddingHorizontal: scale(20),
-          }}>
-          <View style={{height: '5%'}} />
+            justifyContent: 'center',
+          }}
+        >
+          <Image
+            source={require('../../assets/Cap.png')}
+            // resizeMode='contain'
+            style={{
+              width: scale(100),
+              height: scale(100),
+              borderRadius: 10,
+            }}
+          />
+          <View style={{ height: '5%' }} />
           <Text
             style={{
               fontWeight: '500',
               fontSize: scale(18),
               color: '#3c3c3c',
               fontFamily: 'Montserrat-Bold',
-            }}>
+              textAlign: 'center',
+            }}
+          >
             Login or create an account
           </Text>
-          <View style={{height: '5%'}} />
+          <View style={{ height: '5%' }} />
           <Input
             value={phone}
             label={''}
             placeholder="Enter Phone Number"
-            inputStyle={{paddingLeft: scale(50)}}
+            inputStyle={{ paddingLeft: scale(50), height: scale(50) }}
             error={error.phoneError}
             keyboardType="phone-pad"
             onChangeText={(val: any) => onChange(val)}
-            onFocus={() => setError({...error, phoneError: ''})}
+            onFocus={() => setError({ ...error, phoneError: '' })}
           />
           <CommonButton
             text={'Login'}
@@ -134,18 +140,48 @@ console.log("raanarnanr")
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'center',
-            }}></View>
+            }}
+          ></View>
           <Text style={styles.text}>
             By clicking, I accept the{' '}
-            <Text style={[styles.text, {fontFamily: 'Montserrat-Bold'}]}>
+            <Text style={[styles.text, { fontFamily: 'Montserrat-Bold' }]}>
               Terms and Conditions
             </Text>{' '}
             and{' '}
-            <Text style={[styles.text, {fontFamily: 'Montserrat-Bold'}]}>
+            <Text style={[styles.text, { fontFamily: 'Montserrat-Bold' }]}>
               Privacy Policy
             </Text>
           </Text>
-          <View style={{height: '5%'}} />
+          <View style={{ height: '5%' }} />
+          <Pressable
+            onPress={() => navigation.navigate('SignupScreen')}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#3c3c3c',
+                fontSize: scale(16),
+              }}
+            >
+              New user?
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#3c3c3c',
+                  fontSize: scale(16),
+                  fontWeight: 'bold',
+                }}
+              >
+                {' '}
+                Register
+              </Text>
+            </Text>
+          </Pressable>
         </View>
       </View>
     </WrapperComponent>

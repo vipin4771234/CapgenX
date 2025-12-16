@@ -17,6 +17,7 @@ import IconComponent from '../component/Icon/IconComponent';
 import ProfileScreen from '../Screens/Profile/ProfileScreen';
 import DineoutScreen from '../Screens/Dineout/DineoutScreen';
 import { scale } from '../utils/mixins';
+import SignupScreen from '../Screens/Auth/SignupScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -73,6 +74,11 @@ console.log("navigator")
               options={{headerShown: false}}
               name="LoginScreen"
               component={LoginScreen}
+            />
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="SignupScreen"
+              component={SignupScreen}
             />
             <Stack.Screen
               options={{headerShown: false}}
