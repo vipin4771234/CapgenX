@@ -12,7 +12,20 @@
           "package_name": "com.capgenx"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "417300525576-r584v64dbhak5luhisjcif9uc95dj2aj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capgenx",
+            "certificate_hash": "c6bb43a279772200d0988d9f842a44ca70ab8049"
+          }
+        },
+        {
+          "client_id": "417300525576-dfpkc4qh63oj82g274go2ik263ahlfuf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAt2AsawqrYi1fVe56QAeiX6lk2iGXH6lU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417300525576-dfpkc4qh63oj82g274go2ik263ahlfuf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -129,6 +129,7 @@ const LoginScreen = () => {
             loading={loading}
             onPress={() => onSubmit()}
           />
+          {/* <GoogleLoginButton /> */}
           {/* <CommonButton
             text={'SignOut'}
             loading={loading}

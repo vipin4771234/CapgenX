@@ -8,7 +8,7 @@ import {pixelSizeVertical} from '../../utils/normalize';
 import {CONSTANTS} from '../../Style/GlobalStyle';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
-const App = ({handleLogin, login = true}) => {
+const GoogleLoginButton = ({handleLogin, login = true}) => {
   useEffect(() => {
     GoogleSignin.configure({
       scopes: [
@@ -17,7 +17,7 @@ const App = ({handleLogin, login = true}) => {
         'https://www.googleapis.com/auth/user.phonenumbers.read',
       ], // what API you want to access on behalf of the user, default is email and profile
       webClientId:
-        '139027047038-dq2sqld3ba2fa5fn8ck0ptf335e7kvb6.apps.googleusercontent.com',
+        '417300525576-dfpkc4qh63oj82g274go2ik263ahlfuf.apps.googleusercontent.com',
       // iosClientId:
       //   '139027047038-35l7h988dcieb4ki27hi106dn5oehrvh.apps.googleusercontent.com',
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
@@ -64,41 +64,6 @@ const App = ({handleLogin, login = true}) => {
     }
   };
 
-  // const isSignedIn = useCallback(async () => {
-  //   const isSignedIn = await GoogleSignin.isSignedIn();
-  //   if (isSignedIn) {
-  //     getCurrentUserInfo();
-  //   } else {
-  //     console.log('Please Login');
-  //   }
-  // }, [getCurrentUserInfo]);
-
-  // const getCurrentUserInfo = useCallback(async () => {
-  //   try {
-  //     const userInfo = await GoogleSignin.signInSilently();
-  //     console.log({userInfo});
-  //     setUser(userInfo);
-  //   } catch (error) {
-  //     if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-  //       alert('User has not signed in yet');
-  //       console.log('User has not signed in yet');
-  //     } else {
-  //       alert("Something went wrong. Unable to get user's info");
-  //       console.log("Something went wrong. Unable to get user's info");
-  //     }
-  //   }
-  // }, []);
-
-  // const signOut = async () => {
-  //   try {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //     setUser({}); // Remember to remove the user from your app's state as well
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // signOut()
   return (
     <PrimaryButton
       title={
@@ -124,7 +89,7 @@ const App = ({handleLogin, login = true}) => {
       icon={
         <Image
           style={{height: 14, width: 14, marginRight: 8}}
-          source={require('../../../assets/images/icons/google-img.png')}
+          source={require('../../../assets/icons/google-img.png')}
         />
         // <FontAwesome5Icon
         //   style={{marginRight: 10}}
@@ -155,4 +120,4 @@ const styles = StyleSheet.create({
     fontFamily: CONSTANTS.poppins700,
   },
 });
-export default App;
+export default GoogleLoginButton;
