@@ -19,6 +19,7 @@ import WrapperComponent from '../../WrapperComponent/WrapperComponent';
 import { scale } from '../../utils/mixins';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // import {PhoneSignIn} from '../../utils/hooks/PhoneAuth';
+import GoogleLoginButton from './Component/GoogleLoginButton'
 
 const LoginScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -44,6 +45,17 @@ const LoginScreen = () => {
     setError({ phoneError: err.phoneError });
     return valid;
   };
+
+  const googleLogin = async (userInfo: any, accessToken: string) => {
+    try {
+      
+      console.log(userInfo, accessToken)
+      AsyncStorage.setItem('user', userInfo);
+      dispatch(login(userInfo));
+    } catch (error) {
+      
+    }
+  }
 
   const onSubmit = async () => {
     if (!validate()) return;
@@ -129,7 +141,7 @@ const LoginScreen = () => {
             loading={loading}
             onPress={() => onSubmit()}
           />
-          {/* <GoogleLoginButton /> */}
+          <GoogleLoginButton handleLogin={onSubmit} />
           {/* <CommonButton
             text={'SignOut'}
             loading={loading}

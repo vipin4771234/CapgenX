@@ -1,27 +1,37 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Text, Image} from 'react-native';
-import {GoogleSignin, statusCodes} from 'react-native-google-signin';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, Image } from 'react-native';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import Toast from 'react-native-toast-message';
-import {errorToastStyle, loadingToastStyle} from '../../Style/ToastStyle';
-import {PrimaryButton} from '../../Style/index.style';
-import {pixelSizeVertical} from '../../utils/normalize';
-import {CONSTANTS} from '../../Style/GlobalStyle';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import { errorToastStyle, loadingToastStyle } from '../../../style/ToastStyle';
+import { PrimaryButton } from '../../../style/index.style';
+import CONSTANTS from '../../../style/GlobalStyle';
+import { scale } from '../../../utils/mixins';
 
-const GoogleLoginButton = ({handleLogin, login = true}) => {
+type GoogleLoginButtonProps = {
+  handleLogin: (user: any, token: string) => void;
+  login?: boolean; // optional with default true
+};
+
+const GoogleLoginButton = ({
+  handleLogin,
+  login = true,
+}: GoogleLoginButtonProps) => {
   useEffect(() => {
     GoogleSignin.configure({
-      scopes: [
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/user.phonenumbers.read',
-      ], // what API you want to access on behalf of the user, default is email and profile
+      // scopes: [
+      //   'https://www.googleapis.com/auth/userinfo.email',
+      //   'https://www.googleapis.com/auth/userinfo.profile',
+      //   // 'https://www.googleapis.com/auth/user.phonenumbers.read',
+      // ], // what API you want to access on behalf of the user, default is email and profile
       webClientId:
         '417300525576-dfpkc4qh63oj82g274go2ik263ahlfuf.apps.googleusercontent.com',
       // iosClientId:
       //   '139027047038-35l7h988dcieb4ki27hi106dn5oehrvh.apps.googleusercontent.com',
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+      // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      // forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
       // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
     // isSignedIn();
@@ -42,8 +52,9 @@ const GoogleLoginButton = ({handleLogin, login = true}) => {
       // const {email, photo, name} = userInfo.user;
       handleLogin(userInfo, accessToken.accessToken);
       // setUser(userInfo);
-    } catch (error) {
-      console.log({error});
+    } catch (error: any) {
+      console.log({ error });
+      // GoogleSignin.revokeAccess();
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       } else if (error.code === statusCodes.IN_PROGRESS) {
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
@@ -66,41 +77,22 @@ const GoogleLoginButton = ({handleLogin, login = true}) => {
 
   return (
     <PrimaryButton
-      title={
-        login ? (
-          <Text style={styles.buttonTextStyle}>
-            Login with <Text style={styles.buttonBoldText}>Google</Text>
-          </Text>
-        ) : (
-          <Text style={styles.buttonTextStyle}>
-            Sign up with <Text style={styles.buttonBoldText}>Google</Text>
-          </Text>
-        )
-      }
+      title={login ? 'Login with Google' : 'Sign up with Google'}
       titleStyle={{
-        fontSize: pixelSizeVertical(11),
+        fontSize: scale(11),
         color: CONSTANTS.borderColor,
       }}
       buttonStyle={{
         backgroundColor: CONSTANTS.offWhite,
       }}
-      containerStyle={{marginTop: 10}}
+      containerStyle={{ marginTop: 10, marginBottom: 10 }}
       onPress={signIn}
       icon={
         <Image
-          style={{height: 14, width: 14, marginRight: 8}}
+          style={{ height: 14, width: 14, marginRight: 8 }}
           source={require('../../../assets/icons/google-img.png')}
         />
-        // <FontAwesome5Icon
-        //   style={{marginRight: 10}}
-        //   name="google"
-        //   backgroundColor={CONSTANTS.primaryColor}
-        //   color={CONSTANTS.primaryColor}
-        // />
       }
-      // this.setState({
-      //   statShow: !this.state.statShow,
-      // })
     />
   );
 };

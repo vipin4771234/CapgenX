@@ -1,0 +1,30 @@
+const CONSTANTS = {
+  primaryColor: '#b9a11e',
+  textLight: '#fff',
+  bgPrimary: '#11131d',
+  bgSecondry: '#191b25',
+  textDark: '#000',
+  textLightPrimary: '#ddd',
+  poppins100: 'Poppins-Regular',
+  poppins200: 'Poppins-Regular',
+  poppins300: 'Poppins-Regular',
+  poppins400: 'Poppins-SemiBold',
+  poppins500: 'Poppins-Regular',
+  poppins600: 'Poppins-SemiBold',
+  poppins700: 'Poppins-Bold',
+  poppins800: 'Poppins-Bold',
+  poppins900: 'Poppins-Bold',
+  borderColor: '#2a2b37',
+  secondryColor: '#6c757d',
+  buttonBGSecondry: '#343a40',
+  inputBorder: '#51525f',
+  bgDark: '#181b25',
+  textError: '#dc3545',
+  offWhite: '#f2f3f4',
+  mainBg: '#1A1C22',
+  buttoClickDelay: 500,
+  googleApiKey: 'AIzaSyBySWww9G2vui6hPFdIamXaTiH4p9KvuUM',
+};
+
+export default CONSTANTS;
+
