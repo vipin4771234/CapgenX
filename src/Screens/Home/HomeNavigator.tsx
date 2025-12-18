@@ -5,7 +5,7 @@ import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import IconComponent from '../../component/Icon/IconComponent';
 import HomeScreen from './HomeScreen';
 import SearchScreen from './SearchScreen';
-import PlanDetails from './PlanDetails';
+import CourseDetails from './CourseDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,8 +27,8 @@ const HomeNavigator = () => {
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="PlanDetailsScreen"
-          component={PlanDetails}
+          name="CourseDetailsScreen"
+          component={CourseDetails}
         />
       </Stack.Navigator>
   );

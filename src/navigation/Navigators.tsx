@@ -67,8 +67,8 @@ console.log("navigator")
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
-        {!user ? (
+      <Stack.Navigator>
+        {/* {!user ? (
           <>
             <Stack.Screen
               options={{headerShown: false}}
@@ -91,13 +91,13 @@ console.log("navigator")
               component={UserNameScreen}
             />
           </>
-        ) : (
+        ) : ( */}
           <Stack.Screen
             options={{headerShown: false}}
             name="MainTabBar"
             component={TabBarNavigator}
           />
-        )}
+        {/* )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
