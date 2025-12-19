@@ -4,8 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import IconComponent from '../../component/Icon/IconComponent';
 import HomeScreen from './HomeScreen';
-import SearchScreen from './SearchScreen';
 import CourseDetails from './CourseDetails';
+import CourseVideoScreen from './CourseVideoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +22,8 @@ const HomeNavigator = () => {
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="SearchScreen"
-          component={SearchScreen}
+          name="CourseVideoScreen"
+          component={CourseVideoScreen}
         />
         <Stack.Screen
           options={{headerShown: false}}

@@ -96,7 +96,7 @@ const HomeScreen = () => {
             <FlatList
               data={courses}
               renderItem={({ item }) => (
-                <CourseCard course={item} goToCourseDetail={goToCourseDetail} />
+                <CourseCard course={item} goToCourseDetail={()=>goToCourseDetail(item)} />
               )}
             />
           ) : (

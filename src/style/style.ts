@@ -1,8 +1,18 @@
-import {CONSTANTS} from './GlobalStyle';
+import CONSTANTS from './GlobalStyle';
 import {StyleSheet} from 'react-native';
 import { scale } from '../utils/mixins';
 
 export const GlobalStyle = StyleSheet.create({
+  l1: {
+    fontFamily: CONSTANTS.poppins900,
+    color: CONSTANTS.textLightPrimary,
+    fontSize: scale(20),
+  },
+  h1600: {
+    fontFamily: CONSTANTS.poppins600,
+    color: CONSTANTS.textLightPrimary,
+    fontSize: scale(16),
+  },
   h1: {
     fontFamily: CONSTANTS.poppins500,
     color: CONSTANTS.textLightPrimary,

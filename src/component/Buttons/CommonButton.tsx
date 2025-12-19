@@ -7,14 +7,15 @@ import {
 } from 'react-native';
 import React from 'react';
 import { scale } from '../../utils/mixins';
+import CONSTANTS from '../../style/GlobalStyle';
 
-const CommonButton = ({text, onPress, loading}: any) => {
+const CommonButton = ({text, onPress, loading, containerStyle, buttonTextStyle}: any) => {
   return (
-    <Pressable onPress={onPress} style={localStyles.container}>
+    <Pressable onPress={onPress} style={[localStyles.container, containerStyle]}>
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text style={localStyles.buttonText}>{text}</Text>
+        <Text style={[localStyles.buttonTextStyle,buttonTextStyle]}>{text}</Text>
       )}
     </Pressable>
   );
@@ -22,7 +23,7 @@ const CommonButton = ({text, onPress, loading}: any) => {
 
 const localStyles = StyleSheet.create({
   container: {
-    backgroundColor: '#4c3f8a',
+    backgroundColor: CONSTANTS.primaryColor,
     width: '100%',
     height: 50,
     borderRadius: 15,
@@ -30,7 +31,7 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 10,
   },
-  buttonText: {
+  buttonTextStyle: {
     fontSize: scale(18),
     color: '#fff',
     fontFamily: 'Montserrat-Bold'
