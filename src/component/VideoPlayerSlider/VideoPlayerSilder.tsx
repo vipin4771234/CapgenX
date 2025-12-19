@@ -1,67 +1,85 @@
-import React, { useRef } from "react";
-import { View, PanResponder, Animated, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+} from "react-native-reanimated";
+import {
+  Gesture,
+  GestureDetector,
+} from "react-native-gesture-handler";
 
-const VideoPlayerSilder = ({ value, max, onChange }: any) => {
-  const TRACK_WIDTH = 300;
+const VideoPlayerSlider = ({ value, max, onChange }: any) => {
+  const [trackWidth, setTrackWidth] = useState(0);
 
-  // mutable current position
-  const currentX = useRef((value / max) * TRACK_WIDTH);
+  const translateX = useSharedValue(0);
+  const isSliding = useSharedValue(false);
 
-  // UI animated value
-  const panX = useRef(new Animated.Value(currentX.current)).current;
+  // Sync slider with video progress ONLY when not sliding
+  useEffect(() => {
+    if (trackWidth === 0 || max === 0) return;
+    if (isSliding.value) return;
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+    const x = (value / max) * trackWidth;
+    translateX.value = withTiming(x, { duration: 80 });
+  }, [value, max, trackWidth]);
 
-      onPanResponderMove: (_, gesture) => {
-        let newX = currentX.current + gesture.dx;
-
-        // clamp
-        if (newX < 0) newX = 0;
-        if (newX > TRACK_WIDTH) newX = TRACK_WIDTH;
-
-        panX.setValue(newX);
-        onChange((newX / TRACK_WIDTH) * max);
-      },
-
-      onPanResponderRelease: (_, gesture) => {
-        // update stored value
-        currentX.current = currentX.current + gesture.dx;
-
-        if (currentX.current < 0) currentX.current = 0;
-        if (currentX.current > TRACK_WIDTH) currentX.current = TRACK_WIDTH;
-
-        onChange((currentX.current / TRACK_WIDTH) * max);
-      },
+  const panGesture = Gesture.Pan()
+    .onBegin(() => {
+      isSliding.value = true;
     })
-  ).current;
+    .onUpdate((e: any) => {
+      let newX = e.translationX + translateX.value;
 
-  const translateX = panX.interpolate({
-    inputRange: [0, TRACK_WIDTH],
-    outputRange: [0, TRACK_WIDTH],
-    extrapolate: "clamp",
-  });
+      if (newX < 0) newX = 0;
+      if (newX > trackWidth) newX = trackWidth;
+
+      translateX.value = newX;
+
+      const newTime = (newX / trackWidth) * max;
+      runOnJS(onChange)(newTime, false);
+    })
+    .onEnd(() => {
+      const finalX = translateX.value;
+      const finalTime = (finalX / trackWidth) * max;
+
+      isSliding.value = false;
+
+      runOnJS(onChange)(finalTime, true);
+    });
+
+  const filledStyle = useAnimatedStyle(() => ({
+    width: translateX.value,
+  }));
+
+  const thumbStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onLayout={(e) => setTrackWidth(e.nativeEvent.layout.width)}
+    >
+      {/* Background Track */}
       <View style={styles.track} />
 
-      <Animated.View
-        style={[styles.filledTrack, { width: translateX }]}
-      />
+      {/* Filled Track */}
+      <Animated.View style={[styles.filledTrack, filledStyle]} />
 
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[styles.thumb, { transform: [{ translateX }] }]}
-      />
+      {/* Thumb */}
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[styles.thumb, thumbStyle]} />
+      </GestureDetector>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     height: 30,
     justifyContent: "center",
   },
@@ -75,19 +93,17 @@ const styles = StyleSheet.create({
   filledTrack: {
     height: 6,
     backgroundColor: "#fff",
-    // borderRadius: 3,
-    borderTopLeftRadius: 3,
-    borderBottomLeftRadius: 3,
+    borderRadius: 3,
     position: "absolute",
   },
   thumb: {
-    width: 16,
-    height: 16,
+    width: 18,
+    height: 18,
     backgroundColor: "#fff",
-    borderRadius: 8,
+    borderRadius: 9,
     position: "absolute",
-    // top: -5,
+    top: -6,
   },
 });
 
-export default VideoPlayerSilder;
+export default VideoPlayerSlider;

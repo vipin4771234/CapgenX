@@ -1,30 +1,31 @@
-import {View, Text, Pressable} from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { View, Text, Pressable, Image } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../Screens/Auth/LoginScreen';
 import BootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../store';
-import {login} from '../store/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { login } from '../store/UserSlice';
 import OtpScreen from '../Screens/Auth/OtpScreen';
 import UserNameScreen from '../Screens/Auth/UserNameScreen';
 import HomeScreen from '../Screens/Home/HomeScreen';
 import HomeNavigator from '../Screens/Home/HomeNavigator';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconComponent from '../component/Icon/IconComponent';
 import ProfileScreen from '../Screens/Profile/ProfileScreen';
 import DineoutScreen from '../Screens/Dineout/DineoutScreen';
 import { scale } from '../utils/mixins';
 import SignupScreen from '../Screens/Auth/SignupScreen';
+import IMAGES from '../assets/image';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const Navigators = () => {
   const user = useSelector((state: RootState) => state.users.user);
-  console.log({user}, "fromselecetor")
+  console.log({ user }, 'fromselecetor');
   const dispatch = useDispatch();
 
   // const setRecent = async () => {
@@ -54,13 +55,13 @@ const Navigators = () => {
 
   const hide = async () => {
     const user = await AsyncStorage.getItem('user');
-    console.log({user})
+    console.log({ user });
     if (user) {
       dispatch(login(user));
     }
-    await BootSplash.hide({fade: true});
+    await BootSplash.hide({ fade: true });
   };
-console.log("navigator")
+  console.log('navigator');
   useEffect(() => {
     hide();
   }, []);
@@ -92,11 +93,11 @@ console.log("navigator")
             />
           </>
         ) : ( */}
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="MainTabBar"
-            component={TabBarNavigator}
-          />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="MainTabBar"
+          component={TabBarNavigator}
+        />
         {/* )} */}
       </Stack.Navigator>
     </NavigationContainer>
@@ -169,86 +170,70 @@ const TabBarNavigator: FC = () => {
         headerShown: true,
         tabBarActiveTintColor: '#4c3f8a',
         tabBarAllowFontScaling: true,
-      }}>
+      }}
+    >
       <Tab.Screen
         name={'HomeNavigator'}
         component={HomeNavigator}
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarLabelStyle : {
+          tabBarLabelStyle: {
             fontFamily: 'Montserrat-Bold',
-            fontSize: scale(12)
+            fontSize: scale(12),
           },
-          tabBarIcon: ({color,focused}: any) => {
+          tabBarIcon: ({ color, focused }: any) => {
             return (
-              <IconComponent
-                // style={{alignSelf: 'flex-end'}}
-                iconType="FontAwesome6"
-                iconName={'house'}
-                size={scale(22)}
-                color={focused? '#4c3f8a':'gray'}
-              />
+              <>
+              {focused ? (
+                <IMAGES.icHome />
+              ) : (
+                <IMAGES.icHome />
+              )}
+            </>
             );
           },
         }}
       />
       <Tab.Screen
-        name={'FoodScreen'}
+        name={'SubscriptionScreen'}
         component={DineoutScreen}
         options={{
           title: 'Food',
-          tabBarLabelStyle : {
+          tabBarLabelStyle: {
             fontFamily: 'Montserrat-Bold',
-            fontSize: scale(12)
+            fontSize: scale(12),
           },
-          tabBarIcon: ({color,focused}: any) => (
-            <IconComponent
-              // style={{alignSelf: 'flex-end'}}
-              iconType="FontAwesome6"
-              iconName={'plate-wheat'}
-              size={scale(22)}
-              color={focused? '#4c3f8a':'gray'}
-            />
-          ),
+          tabBarIcon: ({ color, focused }: any) => {
+            return (
+              <>
+              {focused ? (
+                <IMAGES.icStar />
+              ) : (
+                <IMAGES.icStar />
+              )}
+            </>
+            );
+          },
         }}
       />
-      <Tab.Screen
-        name={'DineoutScreen'}
-        component={DineoutScreen}
-        options={{
-          title: 'Dineout',
-          tabBarLabelStyle : {
-            fontFamily: 'Montserrat-Bold',
-            fontSize: scale(12)
-          },
-          tabBarIcon: ({color,focused}: any) => (
-            <IconComponent
-              // style={{alignSelf: 'flex-end'}}
-              iconType="FontAwesome6"
-              iconName={'bowl-food'}
-              size={scale(22)}
-              color={focused? '#4c3f8a':'gray'}
-            />
-          ),
-        }}
-      />
+
       <Tab.Screen
         name={'ProfileScreen'}
         component={ProfileScreen}
         options={{
           title: 'Profile',
-          tabBarLabelStyle : {
+          tabBarLabelStyle: {
             fontFamily: 'Montserrat-Bold',
-            fontSize: scale(12)
+            fontSize: scale(12),
           },
-          tabBarIcon: ({color,focused}: any) => (
+          tabBarIcon: ({ color, focused }: any) => (
             <IconComponent
               // style={{alignSelf: 'flex-end'}}
               iconType="FontAwesome"
               iconName={'user'}
               size={scale(25)}
-              color={focused? '#4c3f8a':'gray'}
+              color={focused ? '#4c3f8a' : 'gray'}
             />
           ),
         }}
