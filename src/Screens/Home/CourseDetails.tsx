@@ -30,11 +30,11 @@ const CourseDetails = ({ route }: any) => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
               source={IMAGES.cloud}
-              style={{ width: scale(50), height: scale(50) }}
+              style={{ width: scale(40), height: scale(40) }}
             />
-            <View style={{ marginLeft: scale(15) }}>
+            <View style={{paddingHorizontal: scale(10)}}>
               <Text style={GlobalStyle.l1}>{course.title}</Text>
-              <Text style={{ color: CONSTANTS.offWhite }}>
+              <Text style={{ color: CONSTANTS.offWhite, flexWrap: 'wrap' }}>
                 {course.subtitle}
               </Text>
             </View>
@@ -47,9 +47,9 @@ const CourseDetails = ({ route }: any) => {
           <View
             style={{
               backgroundColor: CONSTANTS.primaryColorTransparent,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              borderRadius: 6,
+              paddingHorizontal: scale(10),
+              paddingVertical: scale(5),
+              borderRadius: scale(6),
               alignSelf: 'flex-start',
               justifyContent: 'center',
               alignItems: 'center',
@@ -68,9 +68,9 @@ const CourseDetails = ({ route }: any) => {
           <View
             style={{
               // backgroundColor: CONSTANTS.primaryColorTransparent,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              borderRadius: 6,
+              paddingHorizontal: scale(10),
+              paddingVertical: scale(5),
+              borderRadius: scale(6),
               alignSelf: 'flex-start',
             }}
           >

@@ -36,39 +36,6 @@ const VideoPlayerSlider = ({
     translateX.value = withTiming(time + 1);
   }, [time]);
 
-  // PAN HANDLER
-  //   const panResponder = PanResponder.create({
-  //     onStartShouldSetPanResponder: () => true,
-
-  //     onPanResponderGrant: () => {
-  //       isDragging.value = true;
-  //       startX.value = translateX.value;
-  //     },
-
-  //     onPanResponderMove: (_, gesture) => {
-  //       let newX = startX.value + gesture.dx;
-  //       newX = Math.max(0, Math.min(newX, sliderWidth - THUMB_SIZE));
-
-  //       translateX.value = newX;
-
-  //       const seekValue = Math.round(
-  //         (newX / (sliderWidth - THUMB_SIZE)) * duration
-  //       );
-
-  //       if (onSlide) runOnJS(onSlide)(seekValue);
-  //     },
-
-  //     onPanResponderRelease: () => {
-  //       isDragging.value = false;
-
-  //       const seekValue = Math.round(
-  //         (translateX.value / (sliderWidth - THUMB_SIZE)) * duration
-  //       );
-
-  //       if (onSlideComplete) runOnJS(onSlideComplete)(seekValue);
-  //     },
-  //   });
-
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));

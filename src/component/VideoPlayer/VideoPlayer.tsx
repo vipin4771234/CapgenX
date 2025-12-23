@@ -90,12 +90,12 @@ useEffect(() => {
               ) : paused ? (
                 <Image
                   source={IMAGES.play}
-                  style={{ width: scale(30), height: scale(30) }}
+                  style={{ width: scale(30), height: scale(30), }}
                 />
               ) : (
                 <Image
                   source={IMAGES.pause}
-                  style={{ width: scale(30), height: scale(30) }}
+                  style={{ width: scale(30), height: scale(30), }}
                 />
               )}
             </TouchableOpacity>
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     height: 220,
     justifyContent: 'space-between',
     padding: 10,
+    zIndex: 9999
   },
 
   playButton: {
