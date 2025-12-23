@@ -1,108 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, PanResponder } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   runOnJS,
-} from "react-native-reanimated";
-import {
-  Gesture,
-  GestureDetector,
-} from "react-native-gesture-handler";
+  withSpring,
+} from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
-const VideoPlayerSlider = ({ value, max, onChange }: any) => {
-  const [trackWidth, setTrackWidth] = useState(0);
+const THUMB_SIZE = 24;
 
-  const translateX = useSharedValue(0);
-  const isSliding = useSharedValue(false);
+const VideoPlayerSlider = ({
+  currentTime = 0,
+  duration = 100,
+  onSlide,
+  onSlideComplete,
+}: any) => {
+  const translateX = useSharedValue<number>(0);
+  const startX = useSharedValue(0);
+  const isDragging = useSharedValue(false);
+  const [sliderWidth, setSliderWidth] = useState(0);
+  const [time, setTime] = useState(0);
 
-  // Sync slider with video progress ONLY when not sliding
+  // MOVE SLIDER BASED ON currentTime ONLY IF NOT DRAGGING
   useEffect(() => {
-    if (trackWidth === 0 || max === 0) return;
-    if (isSliding.value) return;
+    const interval = setInterval(() => {
+      setTime(prev => (prev < 100 ? prev + 1 : prev));
+    }, 1000);
 
-    const x = (value / max) * trackWidth;
-    translateX.value = withTiming(x, { duration: 80 });
-  }, [value, max, trackWidth]);
+    return () => clearInterval(interval);
+  }, []);
 
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      isSliding.value = true;
-    })
-    .onUpdate((e: any) => {
-      let newX = e.translationX + translateX.value;
+  useEffect(() => {
+    translateX.value = withTiming(time + 1);
+  }, [time]);
 
-      if (newX < 0) newX = 0;
-      if (newX > trackWidth) newX = trackWidth;
+  // PAN HANDLER
+  //   const panResponder = PanResponder.create({
+  //     onStartShouldSetPanResponder: () => true,
 
-      translateX.value = newX;
+  //     onPanResponderGrant: () => {
+  //       isDragging.value = true;
+  //       startX.value = translateX.value;
+  //     },
 
-      const newTime = (newX / trackWidth) * max;
-      runOnJS(onChange)(newTime, false);
-    })
-    .onEnd(() => {
-      const finalX = translateX.value;
-      const finalTime = (finalX / trackWidth) * max;
+  //     onPanResponderMove: (_, gesture) => {
+  //       let newX = startX.value + gesture.dx;
+  //       newX = Math.max(0, Math.min(newX, sliderWidth - THUMB_SIZE));
 
-      isSliding.value = false;
+  //       translateX.value = newX;
 
-      runOnJS(onChange)(finalTime, true);
-    });
+  //       const seekValue = Math.round(
+  //         (newX / (sliderWidth - THUMB_SIZE)) * duration
+  //       );
 
-  const filledStyle = useAnimatedStyle(() => ({
-    width: translateX.value,
-  }));
+  //       if (onSlide) runOnJS(onSlide)(seekValue);
+  //     },
 
-  const thumbStyle = useAnimatedStyle(() => ({
+  //     onPanResponderRelease: () => {
+  //       isDragging.value = false;
+
+  //       const seekValue = Math.round(
+  //         (translateX.value / (sliderWidth - THUMB_SIZE)) * duration
+  //       );
+
+  //       if (onSlideComplete) runOnJS(onSlideComplete)(seekValue);
+  //     },
+  //   });
+
+  const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
 
   return (
     <View
       style={styles.container}
-      onLayout={(e) => setTrackWidth(e.nativeEvent.layout.width)}
+      onLayout={e => setSliderWidth(e.nativeEvent.layout.width)}
     >
-      {/* Background Track */}
       <View style={styles.track} />
-
-      {/* Filled Track */}
-      <Animated.View style={[styles.filledTrack, filledStyle]} />
-
-      {/* Thumb */}
-      <GestureDetector gesture={panGesture}>
-        <Animated.View style={[styles.thumb, thumbStyle]} />
-      </GestureDetector>
+      <Animated.View style={[styles.thumb, animatedStyles]} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: 30,
-    justifyContent: "center",
+    height: THUMB_SIZE,
+    justifyContent: 'center',
+    width: '100%',
   },
   track: {
-    width: "100%",
-    height: 6,
-    backgroundColor: "#ffffff40",
+    position: 'absolute',
+    height: 5,
+    width: '100%',
+    backgroundColor: '#ccc',
     borderRadius: 3,
-    position: "absolute",
-  },
-  filledTrack: {
-    height: 6,
-    backgroundColor: "#fff",
-    borderRadius: 3,
-    position: "absolute",
   },
   thumb: {
-    width: 18,
-    height: 18,
-    backgroundColor: "#fff",
-    borderRadius: 9,
-    position: "absolute",
-    top: -6,
+    width: THUMB_SIZE,
+    height: THUMB_SIZE,
+    borderRadius: THUMB_SIZE / 2,
+    backgroundColor: 'lightblue',
   },
 });
 

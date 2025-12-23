@@ -14,13 +14,24 @@ import VideoPlayerSlider from '../VideoPlayerSlider/VideoPlayerSilder';
 
 const VideoPlayer = () => {
   const videoRef = useRef(null);
-  const hideTimerRef = useRef(null);
+  const hideTimerRef = useRef<number>(null);
 
   const [paused, setPaused] = useState(true);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(100);
   const [currentTime, setCurrentTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showControls, setShowControls] = useState(true);
+
+  const [time, setTime] = useState(0);
+// const duration = 100;
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setTime(prev => (prev < 100 ? prev + 1 : prev));
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
 
   // Auto hide controls after 3 seconds
   const startHideTimer = () => {
@@ -44,15 +55,14 @@ const VideoPlayer = () => {
 
   const onBuffer = ({ isBuffering }: any) => setLoading(isBuffering);
 
-  const onProgress = (data: any) =>
-    setCurrentTime(data.currentTime);
+  const onProgress = (data: any) => setCurrentTime(data.currentTime);
 
   return (
     <Pressable style={styles.videoPressable} onPress={onToggleControls}>
       <Video
         ref={videoRef}
         source={{
-          uri: 'https://drive.google.com/uc?export=download&id=1zRDo0nPyht3Y3LjCVyRGyDwytiQy8KuE',
+          uri: 'https://res.cloudinary.com/dggdsksa1/video/upload/v1766384267/Back_End_Developer_Roadmap_-_freeCodeCamp.org_1080p_h264_gutwkt.mp4',
         }}
         style={styles.video}
         paused={paused}
@@ -62,14 +72,11 @@ const VideoPlayer = () => {
         onProgress={onProgress}
       />
 
-      <Pressable
-        onPress={onToggleControls}
-        style={styles.controlPressable}
-      >
+      <Pressable onPress={onToggleControls} style={styles.controlPressable}>
         {showControls && (
           <View style={styles.controlsOverlay}>
             <TouchableOpacity
-              onPress={(e) => {
+              onPress={e => {
                 e.stopPropagation();
                 setPaused(prev => !prev);
                 startHideTimer();
@@ -95,14 +102,16 @@ const VideoPlayer = () => {
 
             <View style={styles.bottomControls}>
               <VideoPlayerSlider
-                value={currentTime}
-                max={duration}
-                onChange={(val: any, isRelease: any) => {
-                  setCurrentTime(val);
-                  if (isRelease) {
-                    videoRef.current.seek(val);
-                  }
-                }}
+                currentTime={time}
+                duration={duration}
+                onSlide={()=> console.log("slide")}
+                onSlideComplete={()=> console.log("slideComplete")}
+                // onChange={(time: any, isFinished: any) => {
+                //   if (isFinished) {
+                //     videoRef.current.seek(time);
+                //   }
+                //   setCurrentTime(time);
+                // }}
               />
             </View>
           </View>
