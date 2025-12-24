@@ -45,17 +45,21 @@ useEffect(() => {
   };
 
   const onLoad = (data: any) => {
+    console.log("data.duration",data.duration)
     setDuration(data.duration);
-
-    setTimeout(() => {
       setPaused(false);
       setLoading(false);
-    }, 1500);
   };
 
-  const onBuffer = ({ isBuffering }: any) => setLoading(isBuffering);
+  const onBuffer = ({ isBuffering }: any) => {
+    console.log({isBuffering})
+    setLoading(isBuffering)
+  };
 
-  const onProgress = (data: any) => setCurrentTime(data.currentTime);
+  const onProgress = (data: any) => {
+    console.log("data.currentTime", data.currentTime)
+    setCurrentTime(data.currentTime)
+  };
 
   return (
     <Pressable style={styles.videoPressable} onPress={onToggleControls}>
@@ -67,9 +71,18 @@ useEffect(() => {
         style={styles.video}
         paused={paused}
         resizeMode="contain"
-        onLoad={onLoad}
+        onLoad={(videoData) => {
+          console.log({videoData})
+          onLoad(videoData)
+        }}
         onBuffer={onBuffer}
-        onProgress={onProgress}
+        onProgress={(progress) => {
+          console.log({progress})
+          onProgress(progress)
+        }}
+        onError={(error) => {
+          console.log({error})
+        }}
       />
 
       <Pressable onPress={onToggleControls} style={styles.controlPressable}>
